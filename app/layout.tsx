@@ -2,6 +2,7 @@ import type React from "react"
 import "@/styles/globals.css"
 import { Inter } from "next/font/google"
 import { Footer } from "@/components/footer"
+import { ClerkProvider } from "@clerk/nextjs"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -16,12 +17,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <div className="flex-grow">{children}</div>
-        <Footer />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={`${inter.className} flex flex-col min-h-screen`}>
+          <div className="flex-grow">{children}</div>
+          <Footer />
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }
 

@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useUser, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
 
 const categories = [
   "All",
@@ -36,6 +37,7 @@ const categories = [
 export function Header({ showCategories = true }) {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
+  const { user, isSignedIn } = useUser();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +51,7 @@ export function Header({ showCategories = true }) {
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="inline-block font-bold">UGsplash</span>
+            <span className="inline-block font-bold">UgandaUnsplash</span>
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-4">
@@ -67,22 +69,30 @@ export function Header({ showCategories = true }) {
               />
             </div>
           </form>
-          <ImageUploadForm />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <Link href="/auth/login">Login</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/auth/register">Register</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {isSignedIn && <ImageUploadForm />}
+          {isSignedIn ? (
+            <UserButton afterSignOutUrl="/" />
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <User className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  <SignInButton mode="modal">
+                    <button className="w-full text-left">Sign In</button>
+                  </SignInButton>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <SignUpButton mode="modal">
+                    <button className="w-full text-left">Sign Up</button>
+                  </SignUpButton>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
       {showCategories && (

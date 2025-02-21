@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { X } from "lucide-react"
+import { useUser } from "@clerk/nextjs"
+import { prisma } from "@/lib/prisma"
 
 interface ImagePreview {
   file: File
@@ -20,6 +22,7 @@ export function ImageUploadForm() {
   const [images, setImages] = useState<ImagePreview[]>([])
   const [title, setTitle] = useState("")
   const [category, setCategory] = useState("")
+  const { user } = useUser()
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
@@ -39,15 +42,55 @@ export function ImageUploadForm() {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would typically send the data to your server
-    console.log("Submitting:", { images, title, category })
+    if (!user) {
+      console.error("User not authenticated")
+      return
+    }
+
+    for (const image of images) {
+      try {
+        // Get presigned URL
+        const presignedResponse = await fetch("/api/upload", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ filename: image.file.name, contentType: image.file.type }),
+        })
+        const { signedUrl, key } = await presignedResponse.json()
+
+        // Upload to R2
+        await fetch(signedUrl, {
+          method: "PUT",
+          body: image.file,
+          headers: { "Content-Type": image.file.type },
+        })
+
+        // Save to database
+        await prisma.image.create({
+          data: {
+            title,
+            alt: title,
+            src: `https://${process.env.NEXT_PUBLIC_CLOUDFLARE_R2_DOMAIN}/${key}`,
+            photographer: user.fullName || "Unknown",
+            category,
+            size: "medium", // You might want to determine this based on the image dimensions
+          },
+        })
+      } catch (error) {
+        console.error("Error uploading image:", error)
+      }
+    }
+
     // Reset form
     setImages([])
     setTitle("")
     setCategory("")
     setOpen(false)
+  }
+
+  if (!user) {
+    return null // Don't render the form if the user is not authenticated
   }
 
   return (
