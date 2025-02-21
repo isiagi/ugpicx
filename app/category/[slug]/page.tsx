@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import UnsplashGrid from "@/components/BentoImageGrid";
 import { Header } from "@/components/header";
-import { ImageGrid } from "@/components/image-grid";
+// import { ImageGrid } from "@/components/image-grid";
 
 export default function CategoryPage({ params }: any) {
   const category = params.slug.charAt(0).toUpperCase() + params.slug.slice(1);
@@ -11,7 +12,7 @@ export default function CategoryPage({ params }: any) {
       <main className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">{category} Images</h1>
         <div className="max-w-[2000px] mx-auto">
-          <ImageGrid category={category} />
+          <UnsplashGrid category={category} />
         </div>
       </main>
     </div>

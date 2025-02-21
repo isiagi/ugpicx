@@ -16,18 +16,26 @@ interface Image {
 
 export function ImageGrid({ category }: { category?: string }) {
   const [images, setImages] = useState<Image[]>([]);
+  const [loaging, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchImages = async () => {
-      const url = new URL("/api/images", window.location.origin);
-      if (category) {
-        url.searchParams.append("category", category);
-      }
-      const response = await fetch(url.toString());
-      const data = await response.json();
-      console.log(data, "data");
+      try {
+        setLoading(true);
+        const url = new URL("/api/images", window.location.origin);
+        if (category) {
+          url.searchParams.append("category", category);
+        }
+        const response = await fetch(url.toString());
+        const data = await response.json();
+        console.log(data, "data");
 
-      setImages(data);
+        setImages(data);
+      } catch (error) {
+        console.log("Error fetching images:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchImages();
@@ -49,6 +57,10 @@ export function ImageGrid({ category }: { category?: string }) {
       console.error("Download failed:", error);
     }
   };
+
+  if (loaging) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[minmax(200px,auto)]">

@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useUser, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
+import Image from "next/image";
 
 const categories = [
   "All",
@@ -52,7 +53,7 @@ export function Header({ showCategories = true }) {
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="inline-block font-bold">Ugsplash</span>
+            <Image src={"/logo.png"} alt="logo" width={100} height={100} />
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-4">
