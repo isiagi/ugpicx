@@ -1,33 +1,41 @@
-import Image from "next/image"
-import { Download, Heart } from "lucide-react"
-import { cn } from "@/lib/utils"
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import Image from "next/image";
+import { Download, Heart } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ImageCardProps {
-  id: string
-  src: string
-  alt: string
-  photographer: string
-  category: string
-  size: "small" | "medium" | "large" | "vertical" | "horizontal"
+  id: string;
+  src: string;
+  alt: string;
+  photographer: string;
+  category: string;
+  size: "small" | "medium" | "large" | "vertical" | "horizontal";
 }
 
-export function ImageCard({ id, src, alt, photographer, category, size }: ImageCardProps) {
+export function ImageCard({
+  id,
+  src,
+  alt,
+  photographer,
+  category,
+  size,
+}: ImageCardProps) {
   const handleDownload = async () => {
     try {
-      const response = await fetch(src)
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const link = document.createElement("a")
-      link.href = url
-      link.download = `${alt}.jpg`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      window.URL.revokeObjectURL(url)
+      const response = await fetch(src);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${alt}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Download failed:", error)
+      console.error("Download failed:", error);
     }
-  }
+  };
 
   return (
     <div
@@ -36,17 +44,17 @@ export function ImageCard({ id, src, alt, photographer, category, size }: ImageC
         "col-span-2 row-span-1": size === "horizontal",
         "row-span-2": size === "vertical",
         "col-span-1 row-span-1": size === "small",
-        "col-span-2 row-span-1": size === "medium",
+        "col-span-2 row-span-3": size === "medium",
       })}
       style={{
         height:
           size === "small"
             ? "200px"
             : size === "medium" || size === "horizontal"
-              ? "300px"
-              : size === "vertical" || size === "large"
-                ? "500px"
-                : "auto",
+            ? "300px"
+            : size === "vertical" || size === "large"
+            ? "500px"
+            : "auto",
       }}
     >
       <Image
@@ -76,6 +84,5 @@ export function ImageCard({ id, src, alt, photographer, category, size }: ImageC
         </button>
       </div>
     </div>
-  )
+  );
 }
-
