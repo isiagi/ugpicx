@@ -1,8 +1,9 @@
-import { Header } from "@/components/header"
-import { ImageGrid } from "@/components/image-grid"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Header } from "@/components/header";
+import { ImageGrid } from "@/components/image-grid";
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
-  const category = params.slug.charAt(0).toUpperCase() + params.slug.slice(1)
+export default function CategoryPage({ params }: any) {
+  const category = params.slug.charAt(0).toUpperCase() + params.slug.slice(1);
 
   return (
     <div className="min-h-screen bg-background">
@@ -14,6 +15,5 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
         </div>
       </main>
     </div>
-  )
+  );
 }
-
