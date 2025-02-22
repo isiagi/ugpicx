@@ -1,17 +1,18 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { prisma } from "@/lib/prisma"
-import Image from "next/image"
-import { Download, Heart } from "lucide-react"
-import { Button } from "@/components/ui/button"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { prisma } from "@/lib/prisma";
+import Image from "next/image";
+import { Download, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-export default async function ImageDetailPage({ params }: { params: { id: string } }) {
+export default async function ImageDetailPage({ params }: { params: any }) {
   const image = await prisma.image.findUnique({
     where: { id: params.id },
-  })
+  });
 
   if (!image) {
-    return <div>Image not found</div>
+    return <div>Image not found</div>;
   }
 
   return (
@@ -20,7 +21,12 @@ export default async function ImageDetailPage({ params }: { params: { id: string
       <main className="container mx-auto px-4 py-8 flex-grow">
         <div className="max-w-4xl mx-auto">
           <div className="relative aspect-video mb-8">
-            <Image src={image.src || "/placeholder.svg"} alt={image.alt} fill className="object-cover rounded-lg" />
+            <Image
+              src={image.src || "/placeholder.svg"}
+              alt={image.alt}
+              fill
+              className="object-cover rounded-lg"
+            />
           </div>
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-3xl font-bold">{image.title}</h1>
@@ -53,6 +59,5 @@ export default async function ImageDetailPage({ params }: { params: { id: string
       </main>
       <Footer />
     </div>
-  )
+  );
 }
-
