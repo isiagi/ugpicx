@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+
 import { useState } from "react";
 import {
   Dialog,
@@ -19,8 +20,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
+import { X, AlertCircle } from "lucide-react";
+import { useUser, SignInButton } from "@clerk/nextjs";
+
+import { useToast } from "@/components/ui/use-toast";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface ImagePreview {
   file: File;
@@ -32,15 +36,38 @@ export function ImageUploadForm() {
   const [images, setImages] = useState<ImagePreview[]>([]);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
+  const { user, isSignedIn } = useUser();
   const [isUploading, setIsUploading] = useState(false);
-  const { user } = useUser();
+  const { toast } = useToast();
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    const newImages = files.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
+    const newImages: ImagePreview[] = [];
+
+    for (const file of files) {
+      // Check image size
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      await new Promise((resolve) => {
+        img.onload = () => {
+          if (img.width * img.height >= 5000000) {
+            // 5MP = 5,000,000 pixels
+            newImages.push({
+              file,
+              preview: img.src,
+            });
+          } else {
+            toast({
+              title: "Image too small",
+              description: `${file.name} is less than 5MP. Please upload larger images.`,
+              variant: "destructive",
+            });
+          }
+          resolve(null);
+        };
+      });
+    }
+
     setImages((prev) => [...prev, ...newImages]);
   };
 
@@ -55,8 +82,12 @@ export function ImageUploadForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      console.error("User not authenticated");
+    if (!isSignedIn) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to upload images.",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -129,9 +160,9 @@ export function ImageUploadForm() {
     }
   };
 
-  if (!user) {
-    return null;
-  }
+  // if (!user) {
+  //   return null;
+  // }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -142,73 +173,96 @@ export function ImageUploadForm() {
         <DialogHeader>
           <DialogTitle>Upload Images</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="images">Images</Label>
-            <Input
-              id="images"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageChange}
-              className="cursor-pointer"
-            />
-          </div>
-
-          {images.length > 0 && (
-            <div className="grid grid-cols-3 gap-2">
-              {images.map((img, index) => (
-                <div key={index} className="relative group">
-                  <img
-                    src={img.preview || "/placeholder.svg"}
-                    alt={`Preview ${index}`}
-                    className="w-full h-24 object-cover rounded-md"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeImage(index)}
-                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-              ))}
+        {isSignedIn ? (
+          <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+            <Alert>
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Upload Guidelines</AlertTitle>
+              <AlertDescription>
+                <ul className="list-disc pl-4 text-sm">
+                  <li>Images should be original and owned by you</li>
+                  <li>Minimum image size: 5 megapixels</li>
+                  <li>Acceptable formats: JPG, PNG</li>
+                  <li>Maximum file size: 10MB per image</li>
+                </ul>
+              </AlertDescription>
+            </Alert>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="images">Images</Label>
+              <Input
+                id="images"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+                className="cursor-pointer"
+              />
             </div>
-          )}
 
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="title">Title</Label>
-            <Input
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
+            {images.length > 0 && (
+              <div className="grid grid-cols-3 gap-2">
+                {images.map((img, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={img.preview || "/placeholder.svg"}
+                      alt={`Preview ${index}`}
+                      className="w-full h-24 object-cover rounded-md"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="category">Category</Label>
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="landscape">Landscape</SelectItem>
+                  <SelectItem value="wildlife">Wildlife</SelectItem>
+                  <SelectItem value="culture">Culture</SelectItem>
+                  <SelectItem value="people">People</SelectItem>
+                  <SelectItem value="city">City</SelectItem>
+                  <SelectItem value="nature">Nature</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Button
+              type="submit"
+              disabled={
+                images.length === 0 || !title || !category || isUploading
+              }
+            >
+              {isUploading ? "Uploading..." : "Upload"}
+            </Button>
+          </form>
+        ) : (
+          <div className="py-4 text-center">
+            <p className="mb-4">Please sign in to upload images.</p>
+            <SignInButton mode="modal">
+              <Button>Sign In</Button>
+            </SignInButton>
           </div>
-
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="category">Category</Label>
-            <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="landscape">Landscape</SelectItem>
-                <SelectItem value="wildlife">Wildlife</SelectItem>
-                <SelectItem value="culture">Culture</SelectItem>
-                <SelectItem value="people">People</SelectItem>
-                <SelectItem value="city">City</SelectItem>
-                <SelectItem value="nature">Nature</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <Button
-            type="submit"
-            disabled={images.length === 0 || !title || !category || isUploading}
-          >
-            {isUploading ? "Uploading..." : "Upload"}
-          </Button>
-        </form>
+        )}
       </DialogContent>
     </Dialog>
   );
