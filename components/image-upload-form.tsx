@@ -160,9 +160,9 @@ export function ImageUploadForm() {
     }
   };
 
-  if (!user) {
-    return null;
-  }
+  // if (!user) {
+  //   return null;
+  // }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
