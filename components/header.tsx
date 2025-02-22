@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import type React from "react";
 
-import { Search, User } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ImageUploadForm } from "./image-upload-form";
@@ -18,33 +17,60 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useUser, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
+import {
+  Camera,
+  Leaf,
+  PawPrintIcon as Paw,
+  Building,
+  Users,
+  Palette,
+  BuildingIcon as Buildings,
+  Cpu,
+  Utensils,
+  PaintbrushIcon as PaintBrush,
+  Dumbbell,
+  Plane,
+  Shirt,
+} from "lucide-react";
 import Image from "next/image";
-
 const categories = [
-  "All",
-  "Nature",
-  "Wildlife",
-  "Architecture",
-  "People",
-  "Culture",
-  "Cities",
-  "Technology",
-  "Food",
-  "Art",
-  "Sports",
-  "Travel",
-  "Fashion",
+  { name: "All", icon: <Camera className="w-4 h-4 mr-2" /> },
+  { name: "Nature", icon: <Leaf className="w-4 h-4 mr-2" /> },
+  { name: "Wildlife", icon: <Paw className="w-4 h-4 mr-2" /> },
+  { name: "Architecture", icon: <Building className="w-4 h-4 mr-2" /> },
+  { name: "People", icon: <Users className="w-4 h-4 mr-2" /> },
+  { name: "Culture", icon: <Palette className="w-4 h-4 mr-2" /> },
+  { name: "Cities", icon: <Buildings className="w-4 h-4 mr-2" /> },
+  { name: "Technology", icon: <Cpu className="w-4 h-4 mr-2" /> },
+  { name: "Food", icon: <Utensils className="w-4 h-4 mr-2" /> },
+  { name: "Art", icon: <PaintBrush className="w-4 h-4 mr-2" /> },
+  { name: "Sports", icon: <Dumbbell className="w-4 h-4 mr-2" /> },
+  { name: "Travel", icon: <Plane className="w-4 h-4 mr-2" /> },
+  { name: "Fashion", icon: <Shirt className="w-4 h-4 mr-2" /> },
 ];
 
 export function Header({ showCategories = true }) {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { user, isSignedIn } = useUser();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const { current } = scrollRef;
+      if (direction === "left") {
+        current.scrollLeft -= 200;
+      } else {
+        current.scrollLeft += 200;
+      }
     }
   };
 
@@ -71,15 +97,13 @@ export function Header({ showCategories = true }) {
               />
             </div>
           </form>
-          {isSignedIn && <ImageUploadForm />}
+          <ImageUploadForm />
           {isSignedIn ? (
             <UserButton afterSignOutUrl="/" />
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <User className="h-5 w-5" />
-                </Button>
+                <Button variant="outline">Login</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem>
@@ -98,21 +122,38 @@ export function Header({ showCategories = true }) {
         </div>
       </div>
       {showCategories && (
-        <div className="border-t">
-          <ScrollArea className="w-full whitespace-nowrap">
+        <div className="border-t relative">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
+            onClick={() => scroll("left")}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <ScrollArea className="w-full whitespace-nowrap" ref={scrollRef}>
             <div className="flex h-12 items-center px-4 container">
               {categories.map((category) => (
                 <Link
-                  key={category}
-                  href={`/category/${category.toLowerCase()}`}
+                  key={category.name}
+                  href={`/category/${category.name.toLowerCase()}`}
                   className="flex items-center px-4 py-2 text-sm font-medium transition-colors hover:text-primary"
                 >
-                  {category}
+                  {category.icon}
+                  {category.name}
                 </Link>
               ))}
             </div>
             <ScrollBar orientation="horizontal" className="invisible" />
           </ScrollArea>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10"
+            onClick={() => scroll("right")}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </div>
       )}
     </div>
