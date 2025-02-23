@@ -87,7 +87,7 @@ export function ImageUploadForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isSignedIn) {
+    if (!isSignedIn || !user) {
       toast({
         title: "Authentication required",
         description: "Please sign in to upload images.",
@@ -144,6 +144,7 @@ export function ImageUploadForm() {
             website,
             instagram,
             twitter,
+            userId: user.id,
             photographer: user.fullName || "Unknown",
             key,
           }),

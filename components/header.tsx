@@ -16,7 +16,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useUser, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
+import {
+  useUser,
+  UserButton,
+  SignInButton,
+  SignUpButton,
+  SignOutButton,
+} from "@clerk/nextjs";
 import {
   Camera,
   Leaf,
@@ -99,7 +105,28 @@ export function Header({ showCategories = true }) {
           </form>
           <ImageUploadForm />
           {isSignedIn ? (
-            <UserButton afterSignOutUrl="/" />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost">
+                  <UserButton afterSignOutUrl="/" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link href="/my-images">My Images</Link>
+                </DropdownMenuItem>
+                {/* my account */}
+                <DropdownMenuItem asChild>
+                  <Link href="/user-profile">My Account</Link>
+                </DropdownMenuItem>
+                {/* logout */}
+                <DropdownMenuItem asChild>
+                  <SignOutButton>
+                    <button className="w-full text-left">Logout</button>
+                  </SignOutButton>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

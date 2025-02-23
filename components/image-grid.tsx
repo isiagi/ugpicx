@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Download, Heart } from "lucide-react";
+import { Download, Heart, ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -20,16 +20,15 @@ interface Image {
 
 // Function to determine size based on index pattern
 const getSizeFromIndex = (index: number): Image["size"] => {
-  // Create a repeating pattern for the grid
   const pattern = [
-    "large", // 1st image: large (2x2)
-    "vertical", // 2nd image: vertical (1x2)
-    "small", // 3rd image: small (1x1)
-    "horizontal", // 4th image: horizontal (2x1)
-    "small", // 5th image: small (1x1)
-    "medium", // 6th image: medium (2x1)
-    "vertical", // 7th image: vertical (1x2)
-    "small", // 8th image: small (1x1)
+    "large",
+    "vertical",
+    "small",
+    "horizontal",
+    "small",
+    "medium",
+    "vertical",
+    "small",
   ];
   return pattern[index % pattern.length];
 };
@@ -38,7 +37,6 @@ const ImageCard = ({ image, index }: { image: Image; index: number }) => {
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Use index to determine size
   const size = getSizeFromIndex(index);
 
   return (
@@ -140,6 +138,22 @@ const ImageSkeleton = ({ size }: { size: Image["size"] }) => {
   );
 };
 
+const EmptyState = ({ category }: { category?: string }) => {
+  return (
+    <div className="col-span-full min-h-[400px] flex flex-col items-center justify-center text-center p-8 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+      <ImageIcon className="w-12 h-12 text-gray-400 mb-4" />
+      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        No images found
+      </h3>
+      <p className="text-gray-500 max-w-md">
+        {category
+          ? `No images found in the "${category}" category. Try selecting a different category or check back later.`
+          : "No images are available at the moment. Please check back later."}
+      </p>
+    </div>
+  );
+};
+
 export function ImageGrid({ category }: { category?: string }) {
   const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(true);
@@ -159,6 +173,7 @@ export function ImageGrid({ category }: { category?: string }) {
         setImages(data);
       } catch (error) {
         console.error("Failed to fetch images:", error);
+        setImages([]);
       } finally {
         setLoading(false);
       }
@@ -167,20 +182,29 @@ export function ImageGrid({ category }: { category?: string }) {
     fetchImages();
   }, [category]);
 
-  // Get skeleton sizes using the same pattern
   const skeletonSizes = Array(8)
     .fill(null)
     .map((_, index) => getSizeFromIndex(index));
 
+  if (loading) {
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[minmax(200px,auto)]">
+        {skeletonSizes.map((size, index) => (
+          <ImageSkeleton key={`skeleton-${index}`} size={size} />
+        ))}
+      </div>
+    );
+  }
+
+  if (!loading && images.length === 0) {
+    return <EmptyState category={category} />;
+  }
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[minmax(200px,auto)]">
-      {loading
-        ? skeletonSizes.map((size, index) => (
-            <ImageSkeleton key={`skeleton-${index}`} size={size} />
-          ))
-        : images.map((image, index) => (
-            <ImageCard key={image.id} image={image} index={index} />
-          ))}
+      {images.map((image, index) => (
+        <ImageCard key={image.id} image={image} index={index} />
+      ))}
     </div>
   );
 }

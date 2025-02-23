@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Header } from "@/components/header";
 // import { Footer } from "@/components/footer";
 import { prisma } from "@/lib/prisma";
@@ -24,6 +25,7 @@ export default async function ImageDetailPage({ params }: { params: any }) {
               src={image.src || "/placeholder.svg"}
               alt={image.alt}
               fill
+              priority
               className="object-contain rounded-lg"
             />
           </div>

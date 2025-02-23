@@ -59,6 +59,7 @@ export async function POST(request: Request) {
         photographer,
         category,
         size: "medium",
+        userId,
       },
     });
 
