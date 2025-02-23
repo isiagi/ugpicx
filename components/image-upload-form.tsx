@@ -40,6 +40,11 @@ export function ImageUploadForm() {
   const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
 
+  const [email, setEmail] = useState("");
+  const [website, setWebsite] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [twitter, setTwitter] = useState("");
+
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const newImages: ImagePreview[] = [];
@@ -135,6 +140,10 @@ export function ImageUploadForm() {
           body: JSON.stringify({
             title,
             category,
+            email,
+            website,
+            instagram,
+            twitter,
             photographer: user.fullName || "Unknown",
             key,
           }),
@@ -151,6 +160,10 @@ export function ImageUploadForm() {
       setImages([]);
       setTitle("");
       setCategory("");
+      setEmail("");
+      setWebsite("");
+      setInstagram("");
+      setTwitter("");
       setOpen(false);
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -169,7 +182,7 @@ export function ImageUploadForm() {
       <DialogTrigger asChild>
         <Button>Post Image</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[750px]">
         <DialogHeader>
           <DialogTitle>Upload Images</DialogTitle>
         </DialogHeader>
@@ -187,6 +200,7 @@ export function ImageUploadForm() {
                 </ul>
               </AlertDescription>
             </Alert>
+
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="images">Images</Label>
               <Input
@@ -220,30 +234,74 @@ export function ImageUploadForm() {
               </div>
             )}
 
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4">
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="title">Title</Label>
+                  <Input
+                    id="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                </div>
 
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="category">Category</Label>
-              <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="landscape">Landscape</SelectItem>
-                  <SelectItem value="wildlife">Wildlife</SelectItem>
-                  <SelectItem value="culture">Culture</SelectItem>
-                  <SelectItem value="people">People</SelectItem>
-                  <SelectItem value="city">City</SelectItem>
-                  <SelectItem value="nature">Nature</SelectItem>
-                </SelectContent>
-              </Select>
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="email">Email (optional)</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="instagram">Instagram (optional)</Label>
+                  <Input
+                    id="instagram"
+                    value={instagram}
+                    onChange={(e) => setInstagram(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="category">Category</Label>
+                  <Select value={category} onValueChange={setCategory}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="landscape">Landscape</SelectItem>
+                      <SelectItem value="wildlife">Wildlife</SelectItem>
+                      <SelectItem value="culture">Culture</SelectItem>
+                      <SelectItem value="people">People</SelectItem>
+                      <SelectItem value="city">City</SelectItem>
+                      <SelectItem value="nature">Nature</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="website">Website (optional)</Label>
+                  <Input
+                    id="website"
+                    type="url"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                  />
+                </div>
+
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="twitter">Twitter (optional)</Label>
+                  <Input
+                    id="twitter"
+                    value={twitter}
+                    onChange={(e) => setTwitter(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
 
             <Button
@@ -251,6 +309,7 @@ export function ImageUploadForm() {
               disabled={
                 images.length === 0 || !title || !category || isUploading
               }
+              className="mt-4"
             >
               {isUploading ? "Uploading..." : "Upload"}
             </Button>

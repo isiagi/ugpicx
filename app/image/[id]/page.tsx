@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+// import { Footer } from "@/components/footer";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
-import { Download, Heart } from "lucide-react";
+import { Download, Heart, Mail, Globe, Instagram, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default async function ImageDetailPage({ params }: { params: any }) {
@@ -45,6 +44,46 @@ export default async function ImageDetailPage({ params }: { params: any }) {
             <div>
               <h2 className="text-lg font-semibold mb-2">Photographer</h2>
               <p>{image.photographer}</p>
+              <div className="mt-2 flex space-x-2">
+                {image.email && (
+                  <a
+                    href={`mailto:${image.email}`}
+                    className="text-primary hover:text-primary-dark"
+                  >
+                    <Mail className="h-5 w-5" />
+                  </a>
+                )}
+                {image.website && (
+                  <a
+                    href={image.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:text-primary-dark"
+                  >
+                    <Globe className="h-5 w-5" />
+                  </a>
+                )}
+                {image.instagram && (
+                  <a
+                    href={`https://instagram.com/${image.instagram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:text-primary-dark"
+                  >
+                    <Instagram className="h-5 w-5" />
+                  </a>
+                )}
+                {image.twitter && (
+                  <a
+                    href={`https://twitter.com/${image.twitter}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:text-primary-dark"
+                  >
+                    <Twitter className="h-5 w-5" />
+                  </a>
+                )}
+              </div>
             </div>
             <div>
               <h2 className="text-lg font-semibold mb-2">Category</h2>
@@ -57,7 +96,7 @@ export default async function ImageDetailPage({ params }: { params: any }) {
           </div>
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

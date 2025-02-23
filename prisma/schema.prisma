@@ -13,6 +13,10 @@ model Image {
   alt          String
   src          String
   photographer String
+  email        String?
+  website      String?
+  instagram    String?
+  twitter      String?
   category     String
   size         String
   createdAt    DateTime @default(now())

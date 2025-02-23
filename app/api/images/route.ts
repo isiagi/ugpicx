@@ -36,11 +36,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { title, category, photographer, key } = await request.json();
+    const {
+      title,
+      category,
+      photographer,
+      key,
+      email,
+      website,
+      instagram,
+      twitter,
+    } = await request.json();
 
     const image = await prisma.image.create({
       data: {
         title,
+        email,
+        website,
+        instagram,
+        twitter,
         alt: title,
         src: `https://${process.env.NEXT_PUBLIC_CLOUDFLARE_R2_DOMAIN}/${key}`,
         photographer,
