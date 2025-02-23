@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -9,14 +9,13 @@ export function Footer() {
             <Link href="/" className="font-bold text-lg">
               UgandaUnsplash
             </Link>
-            <p className="text-sm text-muted-foreground mt-2">Discover the beauty of Uganda through images</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Discover the beauty of Uganda through images
+            </p>
           </div>
           <nav className="flex gap-4">
             <Link href="/about" className="text-sm hover:underline">
               About
-            </Link>
-            <Link href="/contact" className="text-sm hover:underline">
-              Contact
             </Link>
             <Link href="/privacy" className="text-sm hover:underline">
               Privacy Policy
@@ -28,6 +27,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
-

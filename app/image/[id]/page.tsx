@@ -25,7 +25,7 @@ export default async function ImageDetailPage({ params }: { params: any }) {
               src={image.src || "/placeholder.svg"}
               alt={image.alt}
               fill
-              className="object-cover rounded-lg"
+              className="object-contain rounded-lg"
             />
           </div>
           <div className="flex justify-between items-center mb-4">
