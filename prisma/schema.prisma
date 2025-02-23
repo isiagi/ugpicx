@@ -13,8 +13,13 @@ model Image {
   alt          String
   src          String
   photographer String
+  email        String?
+  website      String?
+  instagram    String?
+  twitter      String?
   category     String
   size         String
+  userId       String? @default(cuid())
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
