@@ -85,7 +85,7 @@ export function Header({ showCategories = true }) {
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-2">
-            <Image src={"/logo.png"} alt="logo" width={100} height={100} />
+            <Image src={"/ug.png"} alt="logo" width={120} height={150} />
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-4">

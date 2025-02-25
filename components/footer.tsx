@@ -7,7 +7,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
             <Link href="/" className="font-bold text-lg">
-              UgandaUnsplash
+              UGPicX
             </Link>
             <p className="text-sm text-muted-foreground mt-2">
               Discover the beauty of Uganda through images
@@ -23,7 +23,7 @@ export function Footer() {
           </nav>
         </div>
         <div className="mt-8 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} UgandaUnsplash. All rights reserved.
+          © {new Date().getFullYear()} UGPicX. All rights reserved.
         </div>
       </div>
     </footer>

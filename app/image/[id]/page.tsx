@@ -15,6 +15,8 @@ export default async function ImageDetailPage({ params }: { params: any }) {
     return <div>Image not found</div>;
   }
 
+  // console.log(image, "image");
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header showCategories={false} />
@@ -22,7 +24,7 @@ export default async function ImageDetailPage({ params }: { params: any }) {
         <div className="max-w-4xl mx-auto">
           <div className="relative aspect-video mb-8">
             <Image
-              src={image.src || "/placeholder.svg"}
+              src={image?.src || "/placeholder.svg"}
               alt={image.alt}
               fill
               priority

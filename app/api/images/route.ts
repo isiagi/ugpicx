@@ -3,15 +3,32 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
 export async function GET(request: Request) {
+  // allow cors
+  request.headers.set("Access-Control-Allow-Origin", "*");
+  request.headers.set("Access-Control-Allow-Methods", "GET");
   const { searchParams } = new URL(request.url);
   const category = searchParams.get("category");
+  const search = searchParams.get("search");
   const query = searchParams.get("query");
+  const id = searchParams.get("id");
 
   let images;
   if (category) {
     images = await prisma.image.findMany({
       where: { category: { equals: category, mode: "insensitive" } },
     });
+  } else if (search) {
+    images = await prisma.image.findMany({
+      where: {
+        OR: [
+          { title: { contains: search, mode: "insensitive" } },
+          { alt: { contains: search, mode: "insensitive" } },
+          { category: { contains: search, mode: "insensitive" } },
+        ],
+      },
+    });
+  } else if (id) {
+    images = await prisma.image.findUnique({ where: { id } });
   } else if (query) {
     images = await prisma.image.findMany({
       where: {

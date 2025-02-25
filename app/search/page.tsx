@@ -2,9 +2,16 @@
 import { Header } from "@/components/header";
 import { ImageGrid } from "@/components/image-grid";
 import { Footer } from "@/components/footer";
+import { Suspense } from "react";
 
-export default function SearchPage({ searchParams }: { searchParams: any }) {
-  const query = searchParams.q || "";
+interface SearchPageProps {
+  searchParams: {
+    q?: string;
+  };
+}
+
+export default async function SearchPage({ searchParams }: SearchPageProps) {
+  const query = searchParams.q ?? "";
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -13,7 +20,9 @@ export default function SearchPage({ searchParams }: { searchParams: any }) {
         <h1 className="text-3xl font-bold mb-8">
           Search Results for &quot;{query}&quot;
         </h1>
-        <ImageGrid category={query} />
+        <Suspense fallback={<p>loading...</p>}>
+          <ImageGrid category={query} />
+        </Suspense>
       </main>
       <Footer />
     </div>
