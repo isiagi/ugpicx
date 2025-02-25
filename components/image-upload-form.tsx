@@ -181,7 +181,7 @@ export function ImageUploadForm() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Post Image</Button>
+        <Button className="bg-green-700 hover:bg-green-800">Post Image</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[750px]">
         <DialogHeader>

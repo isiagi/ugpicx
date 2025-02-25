@@ -40,19 +40,31 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 const categories = [
-  { name: "All", icon: <Camera className="w-4 h-4 mr-2" /> },
-  { name: "Nature", icon: <Leaf className="w-4 h-4 mr-2" /> },
-  { name: "Wildlife", icon: <Paw className="w-4 h-4 mr-2" /> },
-  { name: "Architecture", icon: <Building className="w-4 h-4 mr-2" /> },
-  { name: "People", icon: <Users className="w-4 h-4 mr-2" /> },
-  { name: "Culture", icon: <Palette className="w-4 h-4 mr-2" /> },
-  { name: "Cities", icon: <Buildings className="w-4 h-4 mr-2" /> },
-  { name: "Technology", icon: <Cpu className="w-4 h-4 mr-2" /> },
-  { name: "Food", icon: <Utensils className="w-4 h-4 mr-2" /> },
-  { name: "Art", icon: <PaintBrush className="w-4 h-4 mr-2" /> },
-  { name: "Sports", icon: <Dumbbell className="w-4 h-4 mr-2" /> },
-  { name: "Travel", icon: <Plane className="w-4 h-4 mr-2" /> },
-  { name: "Fashion", icon: <Shirt className="w-4 h-4 mr-2" /> },
+  { name: "All", icon: <Camera className="w-4 h-4 mr-2 text-green-500" /> },
+  { name: "Nature", icon: <Leaf className="w-4 h-4 mr-2 text-green-500" /> },
+  { name: "Wildlife", icon: <Paw className="w-4 h-4 mr-2 text-green-500" /> },
+  {
+    name: "Architecture",
+    icon: <Building className="w-4 h-4 mr-2 text-green-500" />,
+  },
+  { name: "People", icon: <Users className="w-4 h-4 mr-2 text-green-500" /> },
+  {
+    name: "Culture",
+    icon: <Palette className="w-4 h-4 mr-2 text-green-500 text-green-500" />,
+  },
+  {
+    name: "Cities",
+    icon: <Buildings className="w-4 h-4 mr-2 text-green-500 text-green-500" />,
+  },
+  { name: "Technology", icon: <Cpu className="w-4 h-4 mr-2 text-green-500" /> },
+  { name: "Food", icon: <Utensils className="w-4 h-4 mr-2 text-green-500" /> },
+  { name: "Art", icon: <PaintBrush className="w-4 h-4 mr-2 text-green-500" /> },
+  {
+    name: "Sports",
+    icon: <Dumbbell className="w-4 h-4 mr-2 text-green-500 text-green-500" />,
+  },
+  { name: "Travel", icon: <Plane className="w-4 h-4 mr-2 text-green-500" /> },
+  { name: "Fashion", icon: <Shirt className="w-4 h-4 mr-2 text-green-500" /> },
 ];
 
 export function Header({ showCategories = true }) {
@@ -164,7 +176,7 @@ export function Header({ showCategories = true }) {
                 <Link
                   key={category.name}
                   href={`/category/${category.name.toLowerCase()}`}
-                  className="flex items-center px-4 py-2 text-sm font-medium transition-colors hover:text-primary"
+                  className="flex items-center px-4 py-2 text-yellow-700 text-sm font-medium transition-colors hover:text-yellow-500"
                 >
                   {category.icon}
                   {category.name}
