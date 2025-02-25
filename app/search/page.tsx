@@ -4,13 +4,13 @@ import { ImageGrid } from "@/components/image-grid";
 import { Footer } from "@/components/footer";
 import { Suspense } from "react";
 
-interface SearchPageProps {
-  searchParams: {
-    q?: string;
-  };
-}
+// interface SearchPageProps {
+//   searchParams: {
+//     q?: string;
+//   };
+// }
 
-export default async function SearchPage({ searchParams }: SearchPageProps) {
+export default async function SearchPage({ searchParams }: any) {
   const query = searchParams.q ?? "";
 
   return (
