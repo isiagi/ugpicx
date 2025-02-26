@@ -1,13 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 "use client";
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Download, Heart, ImageIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 interface Image {
   id: string;
@@ -15,58 +12,25 @@ interface Image {
   alt: string;
   photographer: string;
   category: string;
-  size?: "small" | "medium" | "large" | "vertical" | "horizontal";
 }
 
-// Function to determine size based on index pattern
-const getSizeFromIndex = (index: number): Image["size"] => {
-  const pattern = [
-    "large",
-    "vertical",
-    "small",
-    "horizontal",
-    "small",
-    "medium",
-    "vertical",
-    "small",
-  ];
-  return pattern[index % pattern.length];
-};
-
-const ImageCard = ({ image, index }: { image: Image; index: number }) => {
+const ImageCard = ({ image }: { image: Image }) => {
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  const size = getSizeFromIndex(index);
 
   return (
     <Link
       href={`/image/${image.id}`}
-      className={cn("relative group rounded-xl overflow-hidden bg-gray-100", {
-        "col-span-2 row-span-2": size === "large",
-        "col-span-2 row-span-1": size === "horizontal" || size === "medium",
-        "row-span-2": size === "vertical",
-        "col-span-1 row-span-1": size === "small",
-      })}
-      style={{
-        height:
-          size === "small"
-            ? "200px"
-            : size === "medium" || size === "horizontal"
-            ? "300px"
-            : size === "vertical" || size === "large"
-            ? "500px"
-            : "auto",
-      }}
+      className="relative group rounded-xl overflow-hidden bg-gray-100"
     >
       <Image
-        src={image.src}
+        src={image.src || "/placeholder.svg"}
         alt={image.alt}
-        fill
-        className={cn(
-          "object-cover object-center transition-transform duration-300 ease-in-out group-hover:scale-110",
+        width={500}
+        height={500}
+        className={`object-cover object-center transition-transform duration-300 ease-in-out group-hover:scale-110 ${
           isLoading ? "opacity-0" : "opacity-100"
-        )}
+        }`}
         onLoadingComplete={() => setIsLoading(false)}
         onError={() => setImageError(true)}
         unoptimized
@@ -109,32 +73,6 @@ const ImageCard = ({ image, index }: { image: Image; index: number }) => {
         </>
       )}
     </Link>
-  );
-};
-
-const ImageSkeleton = ({ size }: { size: Image["size"] }) => {
-  return (
-    <div
-      className={cn(
-        "relative rounded-xl overflow-hidden bg-gray-200 animate-pulse",
-        {
-          "col-span-2 row-span-2": size === "large",
-          "col-span-2 row-span-1": size === "horizontal" || size === "medium",
-          "row-span-2": size === "vertical",
-          "col-span-1 row-span-1": size === "small",
-        }
-      )}
-      style={{
-        height:
-          size === "small"
-            ? "200px"
-            : size === "medium" || size === "horizontal"
-            ? "300px"
-            : size === "vertical" || size === "large"
-            ? "500px"
-            : "auto",
-      }}
-    />
   );
 };
 
@@ -182,18 +120,8 @@ export function ImageGrid({ category }: { category?: string }) {
     fetchImages();
   }, [category]);
 
-  const skeletonSizes = Array(8)
-    .fill(null)
-    .map((_, index) => getSizeFromIndex(index));
-
   if (loading) {
-    return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[minmax(200px,auto)]">
-        {skeletonSizes.map((size, index) => (
-          <ImageSkeleton key={`skeleton-${index}`} size={size} />
-        ))}
-      </div>
-    );
+    return <div className="animate-pulse">Loading...</div>;
   }
 
   if (!loading && images.length === 0) {
@@ -201,11 +129,13 @@ export function ImageGrid({ category }: { category?: string }) {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[minmax(200px,auto)]">
-      {images.map((image, index) => (
-        <ImageCard key={image.id} image={image} index={index} />
-      ))}
-    </div>
+    <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
+      <Masonry gutter="1rem">
+        {images.map((image) => (
+          <ImageCard key={image.id} image={image} />
+        ))}
+      </Masonry>
+    </ResponsiveMasonry>
   );
 }
 

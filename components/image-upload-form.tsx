@@ -23,8 +23,10 @@ import {
 import { X, AlertCircle } from "lucide-react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 
-import { useToast } from "@/components/ui/use-toast";
+// import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
+import { toast } from "sonner";
 
 interface ImagePreview {
   file: File;
@@ -38,7 +40,7 @@ export function ImageUploadForm() {
   const [category, setCategory] = useState("");
   const { user, isSignedIn } = useUser();
   const [isUploading, setIsUploading] = useState(false);
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
@@ -62,11 +64,18 @@ export function ImageUploadForm() {
               preview: img.src,
             });
           } else {
-            toast({
-              title: "Image too small",
+            toast("Image is less than 5MP", {
               description: `${file.name} is less than 5MP. Please upload larger images.`,
-              variant: "destructive",
+              action: {
+                label: "Check",
+                onClick: () => console.log("Undo"),
+              },
+              duration: 10000,
+              position: "top-center",
             });
+            // alert(
+            //   `${file.name} is less than 5MP. Please upload larger images.`
+            // );
           }
           resolve(null);
         };
@@ -88,10 +97,10 @@ export function ImageUploadForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isSignedIn || !user) {
-      toast({
-        title: "Authentication required",
-        description: "Please sign in to upload images.",
-        variant: "destructive",
+      toast("You must be signed in to upload images.", {
+        duration: 10000,
+        position: "top-center",
+        description: "Only signed in users can upload images.",
       });
       return;
     }
@@ -181,7 +190,7 @@ export function ImageUploadForm() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-green-700 hover:bg-green-800">Post Image</Button>
+        <Button className="bg-blue-500 hover:bg-green-800">Post Image</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[750px]">
         <DialogHeader>

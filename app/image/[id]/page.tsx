@@ -22,7 +22,7 @@ export default async function ImageDetailPage({ params }: { params: any }) {
       <Header showCategories={false} />
       <main className="container mx-auto px-4 py-8 flex-grow">
         <div className="max-w-4xl mx-auto">
-          <div className="relative aspect-video mb-8">
+          <div className="relative w-full h-[400px] md:h-[700px] mb-8">
             <Image
               src={image?.src || "/placeholder.svg"}
               alt={image.alt}

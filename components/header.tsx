@@ -176,7 +176,7 @@ export function Header({ showCategories = true }) {
                 <Link
                   key={category.name}
                   href={`/category/${category.name.toLowerCase()}`}
-                  className="flex items-center px-4 py-2 text-yellow-700 text-sm font-medium transition-colors hover:text-yellow-500"
+                  className="flex items-center px-4 py-2 text-gray-600 text-sm font-medium transition-colors hover:text-yellow-500"
                 >
                   {category.icon}
                   {category.name}
