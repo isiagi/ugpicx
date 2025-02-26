@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Download, Heart, ImageIcon } from "lucide-react";
-import Link from "next/link";
+// import Link from "next/link";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { useRouter } from "next/navigation";
 
 interface Image {
   id: string;
@@ -17,11 +18,33 @@ interface Image {
 const ImageCard = ({ image }: { image: Image }) => {
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
+  const handleDownload = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Implement download logic here
+    const link = document.createElement("a");
+    link.href = image.src;
+    link.download = `${image.alt}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleImageClick = () => {
+    router.push(`/image/${image.id}`);
+  };
+
+  const handleHeartClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Implement heart/like functionality here
+    console.log("Heart clicked for image:", image.id);
+  };
 
   return (
-    <Link
-      href={`/image/${image.id}`}
-      className="relative group rounded-xl overflow-hidden bg-gray-100"
+    <div
+      className="relative group rounded-xl overflow-hidden bg-gray-100 cursor-pointer"
+      onClick={handleImageClick}
     >
       <Image
         src={image.src || "/placeholder.svg"}
@@ -64,16 +87,22 @@ const ImageCard = ({ image }: { image: Image }) => {
             </p>
           </div>
           <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <button className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors">
+            <button
+              className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+              onClick={handleHeartClick}
+            >
               <Heart className="w-4 h-4 text-gray-700" />
             </button>
-            <button className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors">
+            <button
+              className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+              onClick={handleDownload}
+            >
               <Download className="w-4 h-4 text-gray-700" />
             </button>
           </div>
         </>
       )}
-    </Link>
+    </div>
   );
 };
 
