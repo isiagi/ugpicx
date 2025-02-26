@@ -34,6 +34,7 @@ const ImageCard = ({ image }: { image: Image }) => {
         onLoadingComplete={() => setIsLoading(false)}
         onError={() => setImageError(true)}
         unoptimized
+        priority
       />
 
       {/* Loading state */}
