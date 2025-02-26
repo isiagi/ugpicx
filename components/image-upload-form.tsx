@@ -23,7 +23,6 @@ import {
 import { X, AlertCircle } from "lucide-react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 
-// import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { toast } from "sonner";
@@ -40,7 +39,6 @@ export function ImageUploadForm() {
   const [category, setCategory] = useState("");
   const { user, isSignedIn } = useUser();
   const [isUploading, setIsUploading] = useState(false);
-  // const { toast } = useToast();
 
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
@@ -73,9 +71,6 @@ export function ImageUploadForm() {
               duration: 10000,
               position: "top-center",
             });
-            // alert(
-            //   `${file.name} is less than 5MP. Please upload larger images.`
-            // );
           }
           resolve(null);
         };
@@ -177,23 +172,18 @@ export function ImageUploadForm() {
       setOpen(false);
     } catch (error) {
       console.error("Error uploading image:", error);
-      // You might want to add error handling UI here
     } finally {
       setIsUploading(false);
     }
   };
-
-  // if (!user) {
-  //   return null;
-  // }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="bg-blue-500 hover:bg-blue-600">Post Image</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[750px]">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-[750px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="bg-white z-10 pb-2">
           <DialogTitle>Upload Images</DialogTitle>
         </DialogHeader>
         {isSignedIn ? (
@@ -230,7 +220,7 @@ export function ImageUploadForm() {
                     <img
                       src={img.preview || "/placeholder.svg"}
                       alt={`Preview ${index}`}
-                      className="w-full h-24 object-cover rounded-md"
+                      className="w-full h-54 object-cover rounded-md"
                     />
                     <button
                       type="button"
@@ -244,7 +234,7 @@ export function ImageUploadForm() {
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div className="grid w-full items-center gap-1.5">
                   <Label htmlFor="title">Title</Label>
