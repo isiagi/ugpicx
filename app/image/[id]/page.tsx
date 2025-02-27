@@ -1,12 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Header } from "@/components/header";
 // import { Footer } from "@/components/footer";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import { Download, Heart, Mail, Globe, Instagram, Twitter } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
-export default async function ImageDetailPage({ params }: { params: any }) {
+import { Button } from "@/components/ui/button";
+import { PaymentButton } from "@/components/payment-button";
+import currencyFormater from "@/lib/currencyFormater";
+
+export default async function ImageDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const image = await prisma.image.findUnique({
     where: { id: params.id },
   });
@@ -15,8 +21,6 @@ export default async function ImageDetailPage({ params }: { params: any }) {
     return <div>Image not found</div>;
   }
 
-  // console.log(image, "image");
-
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header showCategories={false} />
@@ -24,7 +28,7 @@ export default async function ImageDetailPage({ params }: { params: any }) {
         <div className="max-w-4xl mx-auto">
           <div className="relative w-full h-[400px] md:h-[700px] mb-8">
             <Image
-              src={image?.src || "/placeholder.svg"}
+              src={image.src || "/placeholder.svg"}
               alt={image.alt}
               fill
               priority
@@ -44,6 +48,13 @@ export default async function ImageDetailPage({ params }: { params: any }) {
                   <Download className="h-4 w-4 text-green-500" />
                 </a>
               </Button>
+              {image.price && (
+                <PaymentButton
+                  imageId={image.id}
+                  price={image.price}
+                  imageSrc={image.src}
+                />
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 mb-8">
@@ -94,17 +105,19 @@ export default async function ImageDetailPage({ params }: { params: any }) {
               </div>
             </div>
             <div>
-              <h2 className="text-lg font-semibold mb-2 text-slate-900">
-                Category
-              </h2>
-              <p className="text-muted-foreground">{image.category}</p>
+              <h2 className="text-lg font-semibold mb-2">Category</h2>
+              <p>{image.category}</p>
+              {image.price && (
+                <>
+                  <h2 className="text-lg font-semibold mt-4 mb-2">Price</h2>
+                  <p>{currencyFormater.format(image.price)}</p>
+                </>
+              )}
             </div>
           </div>
           <div>
-            <h2 className="text-lg font-semibold mb-2 text-slate-900">
-              Description
-            </h2>
-            <p className="text-muted-foreground">{image.alt}</p>
+            <h2 className="text-lg font-semibold mb-2">Description</h2>
+            <p>{image.alt}</p>
           </div>
         </div>
       </main>

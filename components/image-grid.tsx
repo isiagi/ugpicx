@@ -6,6 +6,7 @@ import { Download, Heart, ImageIcon } from "lucide-react";
 // import Link from "next/link";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { useRouter } from "next/navigation";
+import { PaymentButton } from "./payment-button";
 
 interface Image {
   id: string;
@@ -13,6 +14,7 @@ interface Image {
   alt: string;
   photographer: string;
   category: string;
+  price: number;
 }
 
 const ImageCard = ({ image }: { image: Image }) => {
@@ -20,15 +22,33 @@ const ImageCard = ({ image }: { image: Image }) => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const handleDownload = (e: React.MouseEvent) => {
+  // const handleDownload = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   // Implement download logic here
+  //   const link = document.createElement("a");
+  //   link.href = image.src;
+  //   link.download = `${image.alt}.jpg`;
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // };
+
+  const handleDownload = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    // Implement download logic here
-    const link = document.createElement("a");
-    link.href = image.src;
-    link.download = `${image.alt}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const response = await fetch(image.src);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${image.alt}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
   };
 
   const handleImageClick = () => {
@@ -86,19 +106,27 @@ const ImageCard = ({ image }: { image: Image }) => {
               {image.photographer}
             </p>
           </div>
-          <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute top-4 right-4 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
               className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
               onClick={handleHeartClick}
             >
               <Heart className="w-4 h-4 text-gray-700" />
             </button>
-            <button
-              className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
-              onClick={handleDownload}
-            >
-              <Download className="w-4 h-4 text-gray-700" />
-            </button>
+            {image?.price ? (
+              <PaymentButton
+                price={image.price}
+                imageId={image}
+                imageSrc={image.src}
+              />
+            ) : (
+              <button
+                className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+                onClick={handleDownload}
+              >
+                <Download className="w-4 h-4 text-gray-700" />
+              </button>
+            )}
           </div>
         </>
       )}

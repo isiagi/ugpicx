@@ -62,7 +62,10 @@ export async function POST(request: Request) {
       website,
       instagram,
       twitter,
+      price,
     } = await request.json();
+
+    console.log(price, "price");
 
     const image = await prisma.image.create({
       data: {
@@ -76,13 +79,14 @@ export async function POST(request: Request) {
         photographer,
         category,
         size: "medium",
+        price: price ? Number.parseFloat(price) : null,
         userId,
       },
     });
 
     return NextResponse.json(image);
   } catch (error) {
-    console.error("Error creating image record:", error);
+    console.log("Error creating image record:", error);
     return NextResponse.json(
       { error: "Failed to create image record" },
       { status: 500 }

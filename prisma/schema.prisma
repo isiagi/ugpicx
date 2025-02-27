@@ -19,6 +19,7 @@ model Image {
   twitter      String?
   category     String
   size         String
+  price        Float?
   userId       String? @default(cuid())
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
