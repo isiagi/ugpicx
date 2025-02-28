@@ -4,8 +4,8 @@ import { auth } from "@clerk/nextjs/server";
 
 export async function GET(request: Request) {
   // allow cors
-  request.headers.set("Access-Control-Allow-Origin", "*");
-  request.headers.set("Access-Control-Allow-Methods", "GET");
+  // request.headers.set("Access-Control-Allow-Origin", "*");
+  // request.headers.set("Access-Control-Allow-Methods", "GET");
   const { searchParams } = new URL(request.url);
   const category = searchParams.get("category");
   const search = searchParams.get("search");
