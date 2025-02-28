@@ -44,6 +44,7 @@ export function ImageUploadForm() {
   const [website, setWebsite] = useState("");
   const [instagram, setInstagram] = useState("");
   const [twitter, setTwitter] = useState("");
+  const [price, setPrice] = useState("");
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -151,6 +152,7 @@ export function ImageUploadForm() {
             userId: user.id,
             photographer: user.fullName || "Unknown",
             key,
+            price: price ? Number.parseFloat(price) : null,
           }),
         });
 
@@ -169,9 +171,18 @@ export function ImageUploadForm() {
       setWebsite("");
       setInstagram("");
       setTwitter("");
+      setPrice("");
       setOpen(false);
+      toast("Images uploaded successfully!", {
+        duration: 5000,
+        position: "top-center",
+      });
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.log("Error uploading image:", error);
+      toast("Failed to upload images. Please try again.", {
+        duration: 5000,
+        position: "top-center",
+      });
     } finally {
       setIsUploading(false);
     }
@@ -197,6 +208,14 @@ export function ImageUploadForm() {
                   <li>Minimum image size: 5 megapixels</li>
                   <li>Acceptable formats: JPG, PNG</li>
                   <li>Maximum file size: 10MB per image</li>
+                  <li>
+                    Setting price is optional, Flutterwave transfer fee ugx
+                    1000. Set prices above ugx 1000
+                  </li>
+                  <li>
+                    On your price - minus Flutterwave transfer fee, The platform
+                    charges 30% and 70% to you monthly
+                  </li>
                 </ul>
               </AlertDescription>
             </Alert>
@@ -263,6 +282,19 @@ export function ImageUploadForm() {
                     onChange={(e) => setInstagram(e.target.value)}
                   />
                 </div>
+
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="price">Price (optional)</Label>
+                  <Input
+                    id="price"
+                    type="number"
+                    step="100"
+                    min="1000"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    placeholder="Enter price (optional)"
+                  />
+                </div>
               </div>
 
               <div className="space-y-4">
@@ -278,7 +310,13 @@ export function ImageUploadForm() {
                       <SelectItem value="culture">Culture</SelectItem>
                       <SelectItem value="people">People</SelectItem>
                       <SelectItem value="city">City</SelectItem>
+                      <SelectItem value="food">Food</SelectItem>
+                      <SelectItem value="art">Art</SelectItem>
+                      <SelectItem value="sports">Sports</SelectItem>
                       <SelectItem value="nature">Nature</SelectItem>
+                      <SelectItem value="travel">Travel</SelectItem>
+                      <SelectItem value="fashion">Fashion</SelectItem>
+                      <SelectItem value="architecture">Architecture</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
