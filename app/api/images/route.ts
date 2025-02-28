@@ -43,7 +43,14 @@ export async function GET(request: Request) {
     images = await prisma.image.findMany();
   }
 
-  return NextResponse.json(images);
+  return NextResponse.json(images, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Content-Type": "application/json",
+    },
+  });
 }
 
 export async function POST(request: Request) {
