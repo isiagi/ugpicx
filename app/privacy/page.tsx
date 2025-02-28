@@ -9,10 +9,10 @@ export default function PrivacyPolicyPage() {
         <div className="max-w-2xl mx-auto">
           <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
           <p className="mb-4">
-            At UgandaUnsplash, we are committed to protecting your privacy and
-            ensuring the security of your personal information. This Privacy
-            Policy outlines how we collect, use, and safeguard your data when
-            you use our website.
+            At UGPicX, we are committed to protecting your privacy and ensuring
+            the security of your personal information. This Privacy Policy
+            outlines how we collect, use, and safeguard your data when you use
+            our website.
           </p>
           <h2 className="text-2xl font-semibold mt-8 mb-4">
             Information We Collect
