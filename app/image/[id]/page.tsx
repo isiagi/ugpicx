@@ -40,15 +40,17 @@ export default async function ImageDetailPage({
             <h1 className="text-3xl font-bold text-green-700">
               {image.title.toUpperCase()}
             </h1>
-            <div className="flex space-x-2">
+            <div className="flex flex-wrap space-x-2">
               <Button variant="outline" size="icon">
                 <Heart className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon" asChild>
-                <a href={image.src} download={`${image.title}.jpg`}>
-                  <Download className="h-4 w-4 text-green-500" />
-                </a>
-              </Button>
+              {!image.price && (
+                <Button variant="outline" size="icon" asChild>
+                  <a href={image.src} download={`${image.title}.jpg`}>
+                    <Download className="h-4 w-4 text-green-500" />
+                  </a>
+                </Button>
+              )}
               {image.price && (
                 <PaymentButton
                   imageId={image.id}
