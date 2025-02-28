@@ -12,7 +12,7 @@ export default async function ImageDetailPage({
   params,
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  params: { id: any };
+  params: any;
 }) {
   const image = await prisma.image.findUnique({
     where: { id: params.id },
