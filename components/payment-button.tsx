@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 
 import { toast } from "sonner";
+// import { useAuth } from "@clerk/nextjs";
 
 interface PaymentButtonProps {
   imageId: any;
@@ -25,6 +26,8 @@ export function PaymentButton({
   const [error, setError] = useState("");
 
   console.log(imageId, "imageSrc");
+
+  // const { userId } = useAuth();
 
   useEffect(() => {
     console.log("imageSrc received:", imageSrc); // Debug log
@@ -66,6 +69,19 @@ export function PaymentButton({
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
+
+      // Update prisma download count
+      try {
+        await fetch("/api/images/download", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ imageId }),
+        });
+      } catch (error) {
+        console.log("Failed to update download count:", error);
+      }
     } catch (error) {
       console.error("Download failed:", error);
       setError(
