@@ -11,7 +11,8 @@ import currencyFormater from "@/lib/currencyFormater";
 export default async function ImageDetailPage({
   params,
 }: {
-  params: { id: string };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  params: { id: any };
 }) {
   const image = await prisma.image.findUnique({
     where: { id: params.id },
