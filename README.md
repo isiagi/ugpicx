@@ -26,50 +26,50 @@ ugpicx.com is the Unsplash version for Uganda, offering a platform exclusively f
 
 1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/yourusername/ugpicx.com.git
-    cd ugpicx.com
-    ```
+   ```bash
+   git clone https://github.com/isiagi/ugsplash.git
+   cd ugsplash
+   ```
 
 2. Install dependencies:
 
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 3. Set up environment variables:
 
-    Create a `.env` file in the root directory and add the following configuration values:
+   Create a `.env` file in the root directory and add the following configuration values:
 
-    ```bash
-    # Cloudflare R2 credentials
-    CLOUDFLARE_R2_ACCESS_KEY_ID=your_r2_access_key
-    CLOUDFLARE_R2_SECRET_ACCESS_KEY=your_r2_secret_key
-    CLOUDFLARE_R2_BUCKET=your_r2_bucket_name
+   ```bash
+   # Cloudflare R2 credentials
+   CLOUDFLARE_R2_ACCESS_KEY_ID=your_r2_access_key
+   CLOUDFLARE_R2_SECRET_ACCESS_KEY=your_r2_secret_key
+   CLOUDFLARE_R2_BUCKET=your_r2_bucket_name
 
-    # Clerk credentials
-    CLERK_FRONTEND_API=your_clerk_frontend_api
-    CLERK_API_KEY=your_clerk_api_key
+   # Clerk credentials
+   CLERK_FRONTEND_API=your_clerk_frontend_api
+   CLERK_API_KEY=your_clerk_api_key
 
-    # Flutterwave credentials
-    FLUTTERWAVE_PUBLIC_KEY=your_flutterwave_public_key
-    FLUTTERWAVE_SECRET_KEY=your_flutterwave_secret_key
+   # Flutterwave credentials
+   FLUTTERWAVE_PUBLIC_KEY=your_flutterwave_public_key
+   FLUTTERWAVE_SECRET_KEY=your_flutterwave_secret_key
 
-    # Database connection string (for Prisma)
-    DATABASE_URL=your_database_connection_string
-    ```
+   # Database connection string (for Prisma)
+   DATABASE_URL=your_database_connection_string
+   ```
 
 4. Run Prisma migrations:
 
-    ```bash
-    npx prisma migrate dev
-    ```
+   ```bash
+   npx prisma migrate dev
+   ```
 
 5. Start the development server:
 
-    ```bash
-    npm run dev
-    ```
+   ```bash
+   npm run dev
+   ```
 
 Your app should now be running locally at [http://localhost:3000](http://localhost:3000).
 
