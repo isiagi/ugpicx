@@ -204,6 +204,9 @@ export function ImageUploadForm() {
               <AlertTitle>Upload Guidelines</AlertTitle>
               <AlertDescription>
                 <ul className="list-disc pl-4 text-sm">
+                  <li>
+                    Images should be Ugandan or Shot by Ugandan Photographer
+                  </li>
                   <li>Images should be original and owned by you</li>
                   <li>Minimum image size: 5 megapixels</li>
                   <li>Acceptable formats: JPG, PNG</li>
