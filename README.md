@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ugpicx.com
+
+ugpicx.com is the Unsplash version for Uganda, offering a platform exclusively for high-quality, free-to-use images from Uganda. We provide a space where photographers and creators can share their unique perspectives of Ugandan culture, landscapes, people, and more. Whether you're looking for beautiful imagery of Uganda or contributing your own, ugpicx.com is dedicated to showcasing the beauty of Uganda through the lens of its people.
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org) - React framework for production
+- [Prisma](https://www.prisma.io/) - Next-generation ORM
+- [Cloudflare R2](https://www.cloudflare.com/products/r2/) - Object storage solution
+- [Vercel](https://vercel.com) - Deployment platform
+- [Clerk](https://www.clerk.dev) - Authentication solution
+- [Flutterwave](https://www.flutterwave.com) - Payment gateway
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Node.js installed (v18+ recommended)
+2. Cloudflare R2 account and credentials
+3. Clerk account and API keys for authentication
+4. Flutterwave account and API keys for payments
+5. Database setup for Prisma
+6. Vercel account
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    ```bash
+    git clone https://github.com/yourusername/ugpicx.com.git
+    cd ugpicx.com
+    ```
 
-## Learn More
+2. Install dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+    ```bash
+    npm install
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Set up environment variables:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    Create a `.env` file in the root directory and add the following configuration values:
 
-## Deploy on Vercel
+    ```bash
+    # Cloudflare R2 credentials
+    CLOUDFLARE_R2_ACCESS_KEY_ID=your_r2_access_key
+    CLOUDFLARE_R2_SECRET_ACCESS_KEY=your_r2_secret_key
+    CLOUDFLARE_R2_BUCKET=your_r2_bucket_name
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    # Clerk credentials
+    CLERK_FRONTEND_API=your_clerk_frontend_api
+    CLERK_API_KEY=your_clerk_api_key
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    # Flutterwave credentials
+    FLUTTERWAVE_PUBLIC_KEY=your_flutterwave_public_key
+    FLUTTERWAVE_SECRET_KEY=your_flutterwave_secret_key
+
+    # Database connection string (for Prisma)
+    DATABASE_URL=your_database_connection_string
+    ```
+
+4. Run Prisma migrations:
+
+    ```bash
+    npx prisma migrate dev
+    ```
+
+5. Start the development server:
+
+    ```bash
+    npm run dev
+    ```
+
+Your app should now be running locally at [http://localhost:3000](http://localhost:3000).
+
+## Authentication with Clerk
+
+Clerk provides user authentication for ugpicx.com. To integrate Clerk into your application, follow these steps:
+
+1. Sign up at [Clerk](https://www.clerk.dev).
+2. Obtain your Clerk Frontend API and API Key.
+3. Set up authentication routes as per Clerk’s documentation to handle sign-in, sign-up, and session management.
+
+## Payments with Flutterwave
+
+Flutterwave powers payments on ugpicx.com. To accept payments, follow these steps:
+
+1. Sign up at [Flutterwave](https://www.flutterwave.com).
+2. Obtain your Flutterwave public and secret keys.
+3. Implement Flutterwave’s API for payment processing on image purchases, subscriptions, or donations.
+
+## Contributing
+
+We welcome contributions to this project! Whether you have suggestions, bug reports, or code improvements, your help is appreciated.
+
+### How to Contribute:
+
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
+
+Be sure to follow the code style of the project and write tests where applicable.
+
+## Features
+
+- Fast and scalable image hosting
+- Object storage using Cloudflare R2
+- Secure and efficient database management with Prisma
+- Seamless deployment to Vercel
+- User authentication with Clerk
+- Payment processing with Flutterwave
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+For questions, suggestions, or just to chat about the project, feel free to reach out through the Issues section or via email at [your-email@example.com](mailto:isiagigeofrey0@gmail.com).
+
+---
+
+We'd love to have you onboard as a collaborator—feel free to open issues or submit pull requests with new features, improvements, or bug fixes! Thanks for contributing to the growth of ugpicx.com!
