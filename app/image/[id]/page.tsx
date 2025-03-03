@@ -120,7 +120,7 @@ export default async function ImageDetailPage({
           </div>
           <div>
             <h2 className="text-lg font-semibold mb-2">Description</h2>
-            <p>{image.alt}</p>
+            <p>{image.description || "No description provided"}</p>
           </div>
         </div>
       </main>

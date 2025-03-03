@@ -13,6 +13,7 @@ model Image {
   alt          String
   src          String
   photographer String
+  description String?
   email        String?
   website      String?
   instagram    String?

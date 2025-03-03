@@ -37,12 +37,21 @@ import {
   Dumbbell,
   Plane,
   Shirt,
+  Sun,
+  Podcast,
+  TreePalm,
+  ShipWheel,
+  TentTree,
 } from "lucide-react";
 import Image from "next/image";
 const categories = [
   { name: "All", icon: <Camera className="w-4 h-4 mr-2 text-green-500" /> },
   { name: "Nature", icon: <Leaf className="w-4 h-4 mr-2 text-green-500" /> },
   { name: "Wildlife", icon: <Paw className="w-4 h-4 mr-2 text-green-500" /> },
+  {
+    name: "Worship",
+    icon: <Sun className="w-4 h-4 mr-2 text-green-500" />,
+  },
   {
     name: "Architecture",
     icon: <Building className="w-4 h-4 mr-2 text-green-500" />,
@@ -59,12 +68,26 @@ const categories = [
   { name: "Technology", icon: <Cpu className="w-4 h-4 mr-2 text-green-500" /> },
   { name: "Food", icon: <Utensils className="w-4 h-4 mr-2 text-green-500" /> },
   { name: "Art", icon: <PaintBrush className="w-4 h-4 mr-2 text-green-500" /> },
+
+  { name: "Music", icon: <Podcast className="w-4 h-4 mr-2 text-green-500" /> },
+  {
+    name: "Places",
+    icon: <TreePalm className="w-4 h-4 mr-2 text-green-500" />,
+  },
+  {
+    name: "Meet-Ups",
+    icon: <TentTree className="w-4 h-4 mr-2 text-green-500" />,
+  },
   {
     name: "Sports",
     icon: <Dumbbell className="w-4 h-4 mr-2 text-green-500 text-green-500" />,
   },
   { name: "Travel", icon: <Plane className="w-4 h-4 mr-2 text-green-500" /> },
   { name: "Fashion", icon: <Shirt className="w-4 h-4 mr-2 text-green-500" /> },
+  {
+    name: "Politics",
+    icon: <ShipWheel className="w-4 h-4 mr-2 text-green-500" />,
+  },
 ];
 
 export function Header({ showCategories = true }) {
