@@ -26,6 +26,7 @@ import { useUser, SignInButton } from "@clerk/nextjs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { toast } from "sonner";
+import { Textarea } from "./ui/textarea";
 
 interface ImagePreview {
   file: File;
@@ -45,6 +46,7 @@ export function ImageUploadForm() {
   const [instagram, setInstagram] = useState("");
   const [twitter, setTwitter] = useState("");
   const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -149,6 +151,7 @@ export function ImageUploadForm() {
             website,
             instagram,
             twitter,
+            description,
             userId: user.id,
             photographer: user.fullName || "Unknown",
             key,
@@ -172,6 +175,7 @@ export function ImageUploadForm() {
       setInstagram("");
       setTwitter("");
       setPrice("");
+      setDescription("");
       setOpen(false);
       toast("Images uploaded successfully!", {
         duration: 5000,
@@ -268,6 +272,15 @@ export function ImageUploadForm() {
                 </div>
 
                 <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
+
+                <div className="grid w-full items-center gap-1.5">
                   <Label htmlFor="email">Email (optional)</Label>
                   <Input
                     id="email"
@@ -310,8 +323,10 @@ export function ImageUploadForm() {
                     <SelectContent>
                       <SelectItem value="landscape">Landscape</SelectItem>
                       <SelectItem value="wildlife">Wildlife</SelectItem>
+                      <SelectItem value="worship">Worship</SelectItem>
                       <SelectItem value="culture">Culture</SelectItem>
                       <SelectItem value="people">People</SelectItem>
+                      <SelectItem value="music">Music</SelectItem>
                       <SelectItem value="city">City</SelectItem>
                       <SelectItem value="food">Food</SelectItem>
                       <SelectItem value="art">Art</SelectItem>
@@ -320,6 +335,8 @@ export function ImageUploadForm() {
                       <SelectItem value="travel">Travel</SelectItem>
                       <SelectItem value="fashion">Fashion</SelectItem>
                       <SelectItem value="architecture">Architecture</SelectItem>
+                      <SelectItem value="places">Places</SelectItem>
+                      <SelectItem value="politics">Politics</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
