@@ -326,6 +326,7 @@ export function ImageUploadForm() {
                       <SelectItem value="worship">Worship</SelectItem>
                       <SelectItem value="culture">Culture</SelectItem>
                       <SelectItem value="people">People</SelectItem>
+                      <SelectItem value="meet-ups">Meet-ups</SelectItem>
                       <SelectItem value="music">Music</SelectItem>
                       <SelectItem value="city">City</SelectItem>
                       <SelectItem value="food">Food</SelectItem>
