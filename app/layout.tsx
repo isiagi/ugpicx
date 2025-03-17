@@ -8,8 +8,9 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Playfair_Display({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "UgandaUnsplash - Discover Ugandan Beauty",
-  description: "A collection of beautiful Ugandan images",
+  title: "UgPicx - Discover Ugandan Beauty",
+  description:
+    "Explore the beauty of Uganda with UgPicx – your ultimate destination for stunning photos showcasing Uganda’s landscapes, culture, wildlife, and people. Discover and share breathtaking Ugandan photography.",
 };
 
 export default function RootLayout({
