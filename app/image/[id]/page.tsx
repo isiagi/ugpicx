@@ -116,6 +116,12 @@ export default async function ImageDetailPage({
                   <p>{currencyFormater.format(image.price)}</p>
                 </>
               )}
+              {!image.price && (
+                <>
+                  <h2 className="text-lg font-semibold mt-4 mb-2">Downloads</h2>
+                  <p>{image.downloads || 0}</p>
+                </>
+              )}
             </div>
           </div>
           <div>

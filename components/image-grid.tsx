@@ -20,6 +20,7 @@ interface Image {
 const ImageCard = ({ image }: { image: Image }) => {
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [downloading, setDownloading] = useState(false);
   const router = useRouter();
 
   // const handleDownload = (e: React.MouseEvent) => {
@@ -36,7 +37,9 @@ const ImageCard = ({ image }: { image: Image }) => {
   const handleDownload = async (e: React.MouseEvent) => {
     e.stopPropagation();
     try {
-      const response = await fetch(image.src);
+      setDownloading(true);
+      const encodedUrl = encodeURIComponent(image.src);
+      const response = await fetch("/api/image-proxy?url=" + encodedUrl);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -46,8 +49,23 @@ const ImageCard = ({ image }: { image: Image }) => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
+
+      const responses = await fetch("/api/images/download", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ imageId: image.id }),
+      });
+
+      if (!responses.ok) {
+        throw new Error("Failed to track download");
+      }
+      alert("Download successful!");
     } catch (error) {
       console.error("Download failed:", error);
+    } finally {
+      setDownloading(false);
     }
   };
 
@@ -75,10 +93,17 @@ const ImageCard = ({ image }: { image: Image }) => {
           isLoading ? "opacity-0" : "opacity-100"
         }`}
         onLoadingComplete={() => setIsLoading(false)}
+        // onContextMenu={(e) => e.preventDefault()}
         onError={() => setImageError(true)}
         unoptimized
         priority
       />
+
+      {/* <div
+        className="absolute inset-0 z-10"
+        onContextMenu={(e) => e.preventDefault()}
+        onClick={handleImageClick}
+      /> */}
 
       {/* Loading state */}
       {isLoading && !imageError && (
@@ -119,6 +144,8 @@ const ImageCard = ({ image }: { image: Image }) => {
                 imageId={image}
                 imageSrc={image.src}
               />
+            ) : downloading ? (
+              <p className="text-green-500">streaming...</p>
             ) : (
               <button
                 className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"

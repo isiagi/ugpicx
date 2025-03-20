@@ -4,6 +4,7 @@ import { Playfair_Display } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const inter = Playfair_Display({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${inter.className} flex flex-col min-h-screen`}>
+          <GoogleAnalytics />
           <div className="flex-grow">{children}</div>
           <Toaster />
           <Footer />
