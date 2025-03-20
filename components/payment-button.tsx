@@ -151,7 +151,7 @@ export function PaymentButton({
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 z-10">
       {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
 
       {!isPurchased ? (
