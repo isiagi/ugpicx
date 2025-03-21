@@ -2,11 +2,13 @@ import { Header } from "@/components/header";
 // import { Footer } from "@/components/footer";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
-import { Download, Heart, Mail, Globe, Instagram, Twitter } from "lucide-react";
+import { Heart, Mail, Globe, Instagram, Twitter } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { PaymentButton } from "@/components/payment-button";
 import currencyFormater from "@/lib/currencyFormater";
+import { DownloadButton } from "@/components/DownloadButton";
+import { DisableImageRightClick } from "@/components/DisableImageRightClick";
 
 export default async function ImageDetailPage({
   params,
@@ -21,10 +23,40 @@ export default async function ImageDetailPage({
   if (!image) {
     return <div>Image not found</div>;
   }
+  //   try {
+  //     const encodedUrl = encodeURIComponent(image.src);
+  //     const response = await fetch("/api/image-proxy?url=" + encodedUrl);
+  //     const blob = await response.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.download = `${image.alt}.jpg`;
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+  //     window.URL.revokeObjectURL(url);
+
+  //     const responses = await fetch("/api/images/download", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ imageId: image.id }),
+  //     });
+
+  //     if (!responses.ok) {
+  //       throw new Error("Failed to track download");
+  //     }
+  //     alert("Download successful!");
+  //   } catch (error) {
+  //     console.error("Download failed:", error);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header showCategories={false} />
+      <DisableImageRightClick />
       <main className="container mx-auto px-4 py-8 flex-grow">
         <div className="max-w-4xl mx-auto">
           <div className="relative w-full h-[400px] md:h-[700px] mb-8">
@@ -40,16 +72,16 @@ export default async function ImageDetailPage({
             <h1 className="text-3xl font-bold text-green-700">
               {image.title.toUpperCase()}
             </h1>
-            <div className="flex flex-wrap space-x-2">
+            <div className="flex flex-wrap gap-2 space-x-2">
               <Button variant="outline" size="icon">
                 <Heart className="h-4 w-4" />
               </Button>
               {!image.price && (
-                <Button variant="outline" size="icon" asChild>
-                  <a href={image.src} download={`${image.title}.jpg`}>
-                    <Download className="h-4 w-4 text-green-500" />
-                  </a>
-                </Button>
+                <DownloadButton
+                  imageId={image.id}
+                  imageSrc={image.src}
+                  imageTitle={image.title}
+                />
               )}
               {image.price && (
                 <PaymentButton
