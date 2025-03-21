@@ -40,7 +40,9 @@ export async function GET(request: Request) {
       },
     });
   } else {
-    images = await prisma.image.findMany();
+    images = await prisma.image.findMany({
+      orderBy: { createdAt: "desc" },
+    });
   }
 
   return NextResponse.json(images, {
