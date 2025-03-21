@@ -177,7 +177,13 @@ const EmptyState = ({ category }: { category?: string }) => {
   );
 };
 
-export function ImageGrid({ category }: { category?: string }) {
+export function ImageGrid({
+  category,
+  refreshCounter,
+}: {
+  category?: string;
+  refreshCounter?: number;
+}) {
   const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -191,7 +197,7 @@ export function ImageGrid({ category }: { category?: string }) {
         }
         const response = await fetch(url.toString());
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
 
         setImages(data);
       } catch (error) {
@@ -203,7 +209,7 @@ export function ImageGrid({ category }: { category?: string }) {
     };
 
     fetchImages();
-  }, [category]);
+  }, [category, refreshCounter]);
 
   if (loading) {
     return <div className="animate-pulse">Loading...</div>;

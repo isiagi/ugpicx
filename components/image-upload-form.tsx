@@ -33,7 +33,8 @@ interface ImagePreview {
   preview: string;
 }
 
-export function ImageUploadForm() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function ImageUploadForm({ onImageUpload }: any) {
   const [open, setOpen] = useState(false);
   const [images, setImages] = useState<ImagePreview[]>([]);
   const [title, setTitle] = useState("");
@@ -164,6 +165,10 @@ export function ImageUploadForm() {
             `Failed to create database record: ${dbResponse.statusText}`
           );
         }
+      }
+
+      if (onImageUpload) {
+        onImageUpload();
       }
 
       // Reset form
