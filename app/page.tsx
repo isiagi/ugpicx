@@ -11,8 +11,6 @@ export default function Home() {
   // Function to trigger a refresh of the ImageGrid
   const handleImageUpload = () => {
     setRefreshCounter((prevCounter) => prevCounter + 1);
-    console.log("Image uploaded");
-    alert("Image uploaded");
   };
 
   return (
