@@ -182,7 +182,7 @@ export function ImageGrid({
   refreshCounter,
 }: {
   category?: string;
-  refreshCounter: number;
+  refreshCounter?: number;
 }) {
   const [images, setImages] = useState<Image[]>([]);
   const [loading, setLoading] = useState(true);
