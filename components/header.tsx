@@ -90,7 +90,12 @@ const categories = [
   },
 ];
 
-export function Header({ showCategories = true }) {
+interface HeaderProps {
+  showCategories?: boolean;
+  onImageUpload?: () => void;
+}
+
+export function Header({ showCategories = true, onImageUpload }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -138,7 +143,7 @@ export function Header({ showCategories = true }) {
               />
             </div>
           </form>
-          <ImageUploadForm />
+          <ImageUploadForm onImageUpload={onImageUpload} />
           {isSignedIn ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
