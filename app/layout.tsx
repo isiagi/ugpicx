@@ -5,13 +5,14 @@ import { Footer } from "@/components/footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { Providers } from './providers';
 
 const inter = Playfair_Display({ subsets: ["latin"] });
 
 export const metadata = {
   title: "UgPicx - Discover Ugandan Beauty",
   description:
-    "Explore the beauty of Uganda with UgPicx – your ultimate destination for stunning photos showcasing Uganda’s landscapes, culture, wildlife, and people. Discover and share breathtaking Ugandan photography.",
+    "Explore the beauty of Uganda with UgPicx – your ultimate destination for stunning photos showcasing Uganda's landscapes, culture, wildlife, and people. Discover and share breathtaking Ugandan photography.",
 };
 
 export default function RootLayout({
@@ -24,7 +25,9 @@ export default function RootLayout({
       <html lang="en">
         <body className={`${inter.className} flex flex-col min-h-screen`}>
           <GoogleAnalytics />
-          <div className="flex-grow">{children}</div>
+          <Providers>
+            <div className="flex-grow">{children}</div>
+          </Providers>
           <Toaster />
           <Footer />
         </body>

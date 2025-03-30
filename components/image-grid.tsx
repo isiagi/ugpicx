@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Download, Heart, ImageIcon } from "lucide-react";
 // import Link from "next/link";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { useRouter } from "next/navigation";
 import { PaymentButton } from "./payment-button";
+import { useQuery } from "@tanstack/react-query";
 
 interface Image {
   id: string;
@@ -184,45 +186,33 @@ export function ImageGrid({
   category?: string;
   refreshCounter?: number;
 }) {
-  const [images, setImages] = useState<Image[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      setLoading(true);
-      try {
-        const url = new URL("/api/images", window.location.origin);
-        if (category) {
-          url.searchParams.append("category", category);
-        }
-        const response = await fetch(url.toString());
-        const data = await response.json();
-        // console.log(data);
-
-        setImages(data);
-      } catch (error) {
-        console.error("Failed to fetch images:", error);
-        setImages([]);
-      } finally {
-        setLoading(false);
+  const { data: images = [], isLoading } = useQuery({
+    queryKey: ['images', category, refreshCounter],
+    queryFn: async () => {
+      const url = new URL("/api/images", window.location.origin);
+      if (category) {
+        url.searchParams.append("category", category);
       }
-    };
+      const response = await fetch(url.toString());
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    }
+  });
 
-    fetchImages();
-  }, [category, refreshCounter]);
-
-  if (loading) {
+  if (isLoading) {
     return <div className="animate-pulse">Loading...</div>;
   }
 
-  if (!loading && images.length === 0) {
+  if (!isLoading && images.length === 0) {
     return <EmptyState category={category} />;
   }
 
   return (
     <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
       <Masonry gutter="1rem">
-        {images.map((image) => (
+        {images.map((image:any) => (
           <ImageCard key={image.id} image={image} />
         ))}
       </Masonry>
