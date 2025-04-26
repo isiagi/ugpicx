@@ -336,6 +336,7 @@ export function ImageUploadForm({ onImageUpload }: any) {
                       <SelectItem value="city">City</SelectItem>
                       <SelectItem value="food">Food</SelectItem>
                       <SelectItem value="art">Art</SelectItem>
+                      <SelectItem value="agriculture">Agricuture</SelectItem>
                       <SelectItem value="sports">Sports</SelectItem>
                       <SelectItem value="nature">Nature</SelectItem>
                       <SelectItem value="travel">Travel</SelectItem>

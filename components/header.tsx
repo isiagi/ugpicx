@@ -42,6 +42,7 @@ import {
   TreePalm,
   ShipWheel,
   TentTree,
+  Sprout,
 } from "lucide-react";
 import Image from "next/image";
 const categories = [
@@ -73,6 +74,10 @@ const categories = [
   {
     name: "Places",
     icon: <TreePalm className="w-4 h-4 mr-2 text-green-500" />,
+  },
+  {
+    name: "Agriculture",
+    icon: <Sprout className="w-4 h-4 mr-2 text-green-500" />,
   },
   {
     name: "Meet-Ups",
