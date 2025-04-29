@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Header } from "@/components/header";
 import { ImageGrid } from "@/components/image-grid";
-import { Footer } from "@/components/footer";
+// import { Footer } from "@/components/footer";
 import { Suspense } from "react";
 
 // interface SearchPageProps {

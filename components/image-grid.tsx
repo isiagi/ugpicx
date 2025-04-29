@@ -187,18 +187,18 @@ export function ImageGrid({
   refreshCounter?: number;
 }) {
   const { data: images = [], isLoading } = useQuery({
-    queryKey: ['images', category, refreshCounter],
+    queryKey: ["images", category, refreshCounter],
     queryFn: async () => {
       const url = new URL("/api/images", window.location.origin);
-      if (category) {
+      if (category && category !== "All") {
         url.searchParams.append("category", category);
       }
       const response = await fetch(url.toString());
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       return response.json();
-    }
+    },
   });
 
   if (isLoading) {
@@ -212,7 +212,7 @@ export function ImageGrid({
   return (
     <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
       <Masonry gutter="1rem">
-        {images.map((image:any) => (
+        {images.map((image: any) => (
           <ImageCard key={image.id} image={image} />
         ))}
       </Masonry>
