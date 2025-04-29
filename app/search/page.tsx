@@ -24,7 +24,7 @@ export default async function SearchPage({ searchParams }: any) {
           <ImageGrid category={query} />
         </Suspense>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
