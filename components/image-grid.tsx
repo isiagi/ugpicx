@@ -19,6 +19,17 @@ interface Image {
   price: number;
 }
 
+const buildOptimizedUrl = (src: string, width = 800, quality = 75) => {
+  // 1. Your custom Cloudflare domain (must be proxied via Cloudflare DNS)
+  const CLOUDFLARE_DOMAIN = "https://www.ugpicxdb.work";
+
+  // 2. Extract the relative path after domain (e.g. /user_xyz/image.jpg)
+  const relativePath = src.replace(CLOUDFLARE_DOMAIN, "");
+
+  // 3. Construct the optimized URL with Cloudflare transform params
+  return `${CLOUDFLARE_DOMAIN}/cdn-cgi/image/width=${width},quality=${quality},format=auto${relativePath}`;
+};
+
 const ImageCard = ({ image }: { image: Image }) => {
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -87,7 +98,7 @@ const ImageCard = ({ image }: { image: Image }) => {
       onClick={handleImageClick}
     >
       <Image
-        src={image.src || "/placeholder.svg"}
+        src={buildOptimizedUrl(image.src) || "/placeholder.svg"}
         alt={image.alt}
         width={500}
         height={500}
@@ -193,11 +204,15 @@ export function ImageGrid({
       if (category && category !== "All") {
         url.searchParams.append("category", category);
       }
-      const response = await fetch(url.toString());
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      try {
+        const response = await fetch(url.toString());
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      } catch (error) {
+        console.log(error, "erret");
       }
-      return response.json();
     },
   });
 
